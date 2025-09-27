@@ -15,20 +15,9 @@ def carregar_dados(name):
    return pd.read_csv(name)
 df = carregar_dados("insurance.csv")
 
-# Create API client.
-credentials = service_account.Credentials.from_service_account_info(
-    st.secrets["gcp_service_account"]
-)
-client = bigquery.Client(credentials=credentials)
-res=client.query("SELECT * FROM streamlit-473312.MVP.Users" )
-rows=res.result()
-resp=[dict(row) for row in rows]
-for row in resp:
-    st.write("✍️ " + row['Nome'])
 
 
-    #df_2 = pd.read_gbq("SELECT * FROM streamlit-473312.MVP.Users" , dialect="standard") 
-# Mostrar dados
+
 st.subheader("🔍 Visualização da Tabela de Dados")
 st.dataframe(df)
 # Filtros interativos
@@ -69,26 +58,24 @@ sns.boxplot(data=df_filtrado, x="age", y="charges", ax=ax2)
 st.pyplot(fig2)
 st.header("Dados da Base SQL")
 # Create API client.
-#credentials_1 = service_account.Credentials.from_service_account_info(
-#    st.secrets["gcp_service_account"]
-#)
+credentials = service_account.Credentials.from_service_account_info(
+    st.secrets["gcp_service_account"])
 
-credentials = service_account.Credentials.from_service_account_file(
-    '.streamlit/streamlit-473312-d5a1638cf6a2.json')
 
-pandas_gbq.context.credentials = credentials
-pandas_gbq.context.project = "streamlit-473312"
+
+
+#credentials = service_account.Credentials.from_service_account_file(
+#    '.streamlit/streamlit-473312-7fdafe7d85c4.json')
 
 client = bigquery.Client(credentials=credentials)
+#res=client.query("SELECT *  FROM streamlit-473312.MVP.Users LIMIT 1000" )
+#rows=res.result()
+#resp=[dict(row) for row in rows]
+
+
+#client = bigquery.Client(credentials=credentials)
 res=client.query("SELECT * FROM streamlit-473312.MVP.Users" )
 rows=res.result()
 resp=[dict(row) for row in rows]
 df_2=pd.DataFrame(resp)
-#for row in resp:
-    #st.write("✍️ " + row['Nome'])
-    #st.write(" " + row['Funcao'])
-
-
-#sql = "SELECT * FROM MVP.Users"
-#df_2 = pandas_gbq.read_gbq(sql)
 st.dataframe(df_2)
