@@ -74,7 +74,7 @@ st.header("Dados da Base SQL")
 #)
 
 credentials = service_account.Credentials.from_service_account_file(
-    'streamlit-473312-d5a1638cf6a2.json')
+    '.streamlit/streamlit-473312-d5a1638cf6a2.json')
 
 pandas_gbq.context.credentials = credentials
 pandas_gbq.context.project = "streamlit-473312"
